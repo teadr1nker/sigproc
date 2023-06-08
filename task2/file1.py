@@ -8,17 +8,17 @@ def interpolate(t, X, T):
         res += x * np.sinc((np.pi / T) * (t - (k * T)))
     return res
 
-W = 5
+W = 3
 
 T1 = 0.01
-t1 = np.arange(0, 2, T1)
-x1 = np.sin(np.pi * W * t1)
+t1 = np.arange(0, 3, T1)
+x1 = np.sin(np.pi * 2 * W * t1)
 
 plt.plot(t1, x1)
 
-T2 = 1 / 15
-t2 = np.arange(0, 2, T2)
-x2 = np.sin(np.pi * W * t2)
+T2 = 1 / 10
+t2 = np.arange(0, 3, T2)
+x2 = np.sin(np.pi * 2 * W * t2)
 
 plt.plot(t2, x2, linestyle='', marker='o')
 
