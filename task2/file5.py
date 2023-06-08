@@ -13,7 +13,7 @@ y = np.fft.fft(signal)
 
 # Plot amplitude spectrum
 amp = np.abs(y)
-freq = np.fft.fftfreq(n, sampling)
+freq = np.fft.fftfreq(n, sampling) * sampling
 plt.plot(freq, amp)
 plt.ylabel('Amplitude')
 plt.xlabel('Frequency')

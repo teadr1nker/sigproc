@@ -1,32 +1,30 @@
 #!/usr/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.fft as fft
 
-timeStep = .01
-sigFreq = 2
-disFreq = 5
+def interpolate(t, X, T):
+    res = 0.
+    for k, x in enumerate(X):
+        res += x * np.sinc((np.pi / T) * (t - (k * T)))
+    return res
 
-t = np.arange(0, 10, timeStep)
-# print(t)
-oSig = np.sin(t * np.pi * sigFreq)
-plt.plot(t, oSig)
+W = 5
 
-t2 = np.arange(0, 10, 1 / disFreq)
-dSig = np.sin(t2 * np.pi * sigFreq)
-plt.plot(t2, dSig)
+T1 = 0.01
+t1 = np.arange(0, 2, T1)
+x1 = np.sin(np.pi * W * t1)
 
-# plt.show()
-plt.clf()
+plt.plot(t1, x1)
 
-sigFft = fft.fft(dSig)
-amp = np.abs(sigFft)
-power = amp ** 2
-ang = np.angle(sigFft)
-sFreq = fft.fftfreq(len(dSig), d = 1 / disFreq)
+T2 = 1 / 15
+t2 = np.arange(0, 2, T2)
+x2 = np.sin(np.pi * W * t2)
 
-ampFreq = np.array([amp, sFreq])
-peakFreq = ampFreq[1, ampFreq[0, :].argmax()]
-print(peakFreq)
-plt.plot(amp)
+plt.plot(t2, x2, linestyle='', marker='o')
+
+# size = len(t2)
+# x2 = x2[:size//2]
+
+x3 = np.array([interpolate(t, x2, T2) for t in t1])
+plt.plot(t1, x3)
 plt.show()
