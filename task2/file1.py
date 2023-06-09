@@ -16,7 +16,7 @@ x1 = np.sin(np.pi * 2 * W * t1)
 
 plt.plot(t1, x1)
 
-W2 = 10
+W2 = 7
 T2 = 1 / W2
 t2 = np.arange(0, 3, T2)
 x2 = np.sin(np.pi * 2 * W * t2)
