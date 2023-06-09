@@ -159,7 +159,7 @@ for k in range(t - 1):
     # Forecasting
     C = np.linalg.cholesky(P)  # Cholesky decomposition
 
-    # Формирование сигма-точек
+    # Calculating sigma points
     X_x[0] = m_x[k]
     X_y[0] = m_y[k]
     X_r[0] = m_r[k]
@@ -289,19 +289,6 @@ for k in range(t - 1):
     P = P - K_S.dot(np.transpose(K))
 
 ###############################################################################
-# Plotting
-# fig = plt.figure()
-#
-# # EKF
-# ax1 = fig.add_subplot(2, 2, 1)
-# ax1.plot(EKF_x, EKF_y, "-bo")
-# ax1.set_title("EKF")
-#
-# # UKF
-# ax2 = fig.add_subplot(2, 2, 2)
-# ax2.plot(m_x, m_y, "-ro")
-# ax2.set_title("UKF")
-# plt.show()
 
 plt.plot(EKF_x, EKF_y, "-bo")
 plt.title('EKF')
