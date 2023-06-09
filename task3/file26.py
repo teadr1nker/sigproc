@@ -19,3 +19,15 @@ filtered = lfilter(b, a, signal)
 
 plt.plot(t[:4000], filtered[:4000])
 plt.show()
+plt.clf()
+
+# Calculating amplitude spectrum
+fft1 = np.fft.fft(filtered)
+frq = np.fft.fftfreq(len(filtered), T)
+fft2 = np.fft.fft(signal)
+plt.plot(frq, np.abs(fft2))
+plt.plot(frq, np.abs(fft1))
+plt.xlabel('Frequency')
+plt.ylabel('Amplitude')
+plt.title('Filtered Signal Spectrum')
+plt.show()

@@ -17,4 +17,15 @@ size = sampling // 25
 plt.plot(signal[offset:offset+size])
 plt.plot(filtered[offset:offset+size])
 plt.show()
+plt.clf()
 
+# Calculating amplitude spectrum
+frq = np.fft.fftfreq(len(filtered), 1/sampling)
+fft1 = np.fft.fft(filtered)
+fft2 = np.fft.fft(signal)
+plt.plot(frq, np.abs(fft2))
+plt.plot(frq, np.abs(fft1))
+plt.xlabel('Frequency')
+plt.ylabel('Amplitude')
+plt.title('Filtered Signal Spectrum')
+plt.show()

@@ -9,16 +9,18 @@ def X2(T):
 
 def ampSpec(f):
     T = .01
-    t = np.arange(1, 5, T)
+    t = np.arange(0, 5, T)
     x = f(t)
-    plt.plot(t, x)
-    plt.show()
-    plt.clf()
+    # plt.plot(t, x)
+    # plt.show()
+    # plt.clf()
 
     xFFT = np.fft.fft(x)
     freq = np.fft.fftfreq(len(x), 100)
+    freq = np.fft.fftshift(freq)
     amp = np.abs(xFFT)
     plt.plot(freq, amp)
     plt.show()
 
+ampSpec(X1)
 ampSpec(X2)
