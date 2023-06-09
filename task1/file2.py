@@ -290,15 +290,24 @@ for k in range(t - 1):
 
 ###############################################################################
 # Plotting
-fig = plt.figure()
+# fig = plt.figure()
+#
+# # EKF
+# ax1 = fig.add_subplot(2, 2, 1)
+# ax1.plot(EKF_x, EKF_y, "-bo")
+# ax1.set_title("EKF")
+#
+# # UKF
+# ax2 = fig.add_subplot(2, 2, 2)
+# ax2.plot(m_x, m_y, "-ro")
+# ax2.set_title("UKF")
+# plt.show()
 
-# EKF
-ax1 = fig.add_subplot(2, 2, 1)
-ax1.plot(EKF_x, EKF_y, "-bo")
-ax1.set_title("EKF")
-
-# UKF
-ax2 = fig.add_subplot(2, 2, 2)
-ax2.plot(m_x, m_y, "-ro")
-ax2.set_title("UKF")
-plt.show()
+plt.plot(EKF_x, EKF_y, "-bo")
+plt.title('EKF')
+plt.savefig('ekf.png')
+plt.clf()
+plt.plot(m_x, m_y, "-bo")
+plt.title('UKF')
+plt.savefig('ukf.png')
+plt.clf()
