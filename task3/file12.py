@@ -10,12 +10,12 @@ def desingFilter(fs, freqs):
     A = np.zeros((num_taps, len(freqs)))
     b = np.zeros((num_taps, 1))
 
-    for i, freq_range in enumerate(freqs):
-        freq_start, freq_end = freq_range
+    for i, range in enumerate(freqs):
+        start, end = range
 
         # indexes for filtering
-        start_index = int(freq_start * num_taps / fs)
-        end_index = int(freq_end * num_taps / fs)
+        start_index = int(start * num_taps / fs)
+        end_index = int(end * num_taps / fs)
 
         # Calculating vectors
         A[start_index:end_index, i] = 1

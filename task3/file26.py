@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import cheby1, lfilter
 import pandas as pd
 
+# read signal
 df = pd.read_csv('../task2/data/ecg.dat', delimiter=' ')
 print(df.head(6))
 t = df['time'].values
@@ -14,6 +15,7 @@ sampling = int(1 / T)
 print(f'size: {n}, sampling: {sampling}')
 plt.plot(t[:4000], signal[:4000])
 
+# filter signal
 b, a = cheby1(10, 5, 30 , fs=sampling)
 filtered = lfilter(b, a, signal)
 

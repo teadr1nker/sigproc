@@ -7,6 +7,7 @@ T = 0.0001
 sampling = int(1 / T)
 t = np.arange(0, .3, T)
 
+# create signal
 x = np.sin(np.pi * 2  * 10 * t)
 x += np.sin(np.pi * 2 * 100 * t)
 x += np.sin(np.pi * 2 * 500 * t)
@@ -14,6 +15,8 @@ x += np.sin(np.pi * 2 * 1000 * t)
 x += np.sin(np.pi * 2 * 1600 * t)
 
 plt.plot(t, x)
+
+# filter signal
 b, a = cheby1(4, 4, [50, 150], fs=sampling, btype='bandstop')
 filtered = lfilter(b, a, x)
 

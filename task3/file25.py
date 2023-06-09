@@ -4,14 +4,17 @@ import matplotlib.pyplot as plt
 import scipy.io.wavfile as wav
 from scipy.signal import cheby1, lfilter
 
+# read file
 sampling, signal = wav.read('../task2/data/tune.wav')
 print(f'sampling: {sampling}')
 
+# filter signal
 b, a = cheby1(10, 4, 6000, fs=sampling)
 filtered = lfilter(b, a, signal).astype(np.int16)
 
 wav.write('filtered.wav', sampling, filtered)
 
+# plot difference
 offset = sampling
 size = sampling // 25
 plt.plot(signal[offset:offset+size])
