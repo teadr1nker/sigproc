@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import butter, cheby1, lfilter
+from scipy.signal import cheby1, lfilter
 
 T = 0.0001
 sampling = int(1 / T)

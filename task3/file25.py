@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile as wav
-from scipy.signal import cheby1, lfilter, freqz
+from scipy.signal import cheby1, lfilter
 
 sampling, signal = wav.read('../task2/data/tune.wav')
 print(f'sampling: {sampling}')

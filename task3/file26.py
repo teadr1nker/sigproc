@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import cheb1ord, cheby1, lfilter
+from scipy.signal import cheby1, lfilter
 import pandas as pd
 
 df = pd.read_csv('../task2/data/ecg.dat', delimiter=' ')
