@@ -4,7 +4,7 @@ from scipy.linalg import lstsq
 import matplotlib.pyplot as plt
 
 def desingFilter(fs, freqs):
-    num_taps = 1000  # Filter len
+    num_taps = 100  # Filter len
 
     # filter matrix creation
     A = np.zeros((num_taps, len(freqs)))
@@ -39,13 +39,12 @@ x += np.sin(np.pi * 2 * 1600 * t)
 freqs = [(50, 150), (350, 750), (900, 1500)]
 
 # Calculating filter
-filter = desingFilter(sampling, freqs)
-
-print("Filter coefficients:", filter)
+filt = desingFilter(sampling, freqs)
+print("Filter coefficients:", filt)
 
 # Filtering
-filtered = np.convolve(x, filter, mode='same')
-
+filtered = np.convolve(x, filt, mode='same')
+filtered = lfilter(b, a, x)
 plt.plot(t, filtered)
 plt.plot(t, x)
 plt.show()
@@ -54,7 +53,7 @@ plt.show()
 fft1 = np.fft.fft(filtered)
 frq = np.fft.fftfreq(len(x), T)
 fft2 = np.fft.fft(x)
-# plt.plot(frq, np.abs(fft2))
+plt.plot(frq, np.abs(fft2))
 plt.plot(frq, np.abs(fft1))
 plt.xlabel('Frequency')
 plt.ylabel('Amplitude')
