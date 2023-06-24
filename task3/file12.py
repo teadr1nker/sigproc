@@ -1,61 +1,29 @@
 #!/usr/bin/python3
 import numpy as np
-from scipy.linalg import lstsq
 import matplotlib.pyplot as plt
 
-def desingFilter(fs, freqs):
-    num_taps = 100  # Filter len
+def bandpassFilter(ntaps, fs, bands):
+    coef = 2 * np.pi / fs
+    omega = np.arange(0, np.pi, np.pi / ntaps )
+    freqResponse = np.zeros(ntaps, dtype=np.float64)
 
-    # filter matrix creation
-    A = np.zeros((num_taps, len(freqs)))
-    b = np.zeros((num_taps, 1))
+    # Finding frequency response
+    for band in bands:
+        start = coef * band[0]
+        end = coef * band[1]
+        freqResponse += np.where(np.logical_and(omega >= start, omega < end), 1, 0)
 
-    for i, range in enumerate(freqs):
-        start, end = range
+    nyq = (ntaps - 1)//2
+    A = np.asmatrix(freqResponse[0:ntaps]).T
+    FS = np.asmatrix(np.zeros((ntaps, nyq)))
+    nyqRange = np.arange(nyq , 0, -1)
 
-        # indexes for filtering
-        start_index = int(start * num_taps / fs)
-        end_index = int(end * num_taps / fs)
+    # Filling FS matrix
+    for i in range(ntaps - 1):
+        FS[i, 0 : nyq] = 2 * np.sin(omega[i + 1] * nyqRange)
 
-        # Calculating vectors
-        A[start_index:end_index, i] = 1
-        b[start_index:end_index] = 1
+    # Calculating only left half impulse response
+    h = np.linalg.inv(FS.T * FS) * FS.T * A
+    h = np.asarray(h.T)[0]
 
-    # Solving equation system
-    coeffs, _, _, _ = lstsq(A, b)
-
-    return coeffs.flatten()
-
-T = 0.0001
-sampling = int(1 / T)
-t = np.arange(0, .3, T)
-
-x = np.sin(np.pi * 2  * 10 * t)
-x += np.sin(np.pi * 2 * 100 * t)
-x += np.sin(np.pi * 2 * 500 * t)
-x += np.sin(np.pi * 2 * 1000 * t)
-x += np.sin(np.pi * 2 * 1600 * t)
-
-freqs = [(50, 150), (350, 750), (900, 1500)]
-
-# Calculating filter
-filt = desingFilter(sampling, freqs)
-print("Filter coefficients:", filt)
-
-# Filtering
-filtered = np.convolve(x, filt, mode='same')
-filtered = lfilter(b, a, x)
-plt.plot(t, filtered)
-plt.plot(t, x)
-plt.show()
-
-# Calculating amplitude spectrum
-fft1 = np.fft.fft(filtered)
-frq = np.fft.fftfreq(len(x), T)
-fft2 = np.fft.fft(x)
-plt.plot(frq, np.abs(fft2))
-plt.plot(frq, np.abs(fft1))
-plt.xlabel('Frequency')
-plt.ylabel('Amplitude')
-plt.title('Filtered Signal Spectrum')
-plt.show()
+    return np.concatenate([h, [0], -np.flip(h)])

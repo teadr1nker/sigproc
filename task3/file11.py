@@ -1,43 +1,33 @@
 #!/usr/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import cheby1, lfilter
+from scipy.signal import firls, freqz
+from file12 import bandpassFilter
 
-T = 0.0001
-sampling = int(1 / T)
-t = np.arange(0, .3, T)
+fs = 8000
+ntaps = 501
+bands = [0, 50, 50, 150,
+         150, 350,
+         350, 750, 750, 900,
+         900, 1500, 1500, fs//2]
+desired = (0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0)
 
-# create signal
-x = np.sin(np.pi * 2  * 10 * t)
-x += np.sin(np.pi * 2 * 100 * t)
-x += np.sin(np.pi * 2 * 500 * t)
-x += np.sin(np.pi * 2 * 1000 * t)
-x += np.sin(np.pi * 2 * 1600 * t)
+# Bultin function
+taps = firls(ntaps, bands, desired, fs=fs)
+w, h = freqz(taps)
+plt.plot((.5 * fs / np.pi) * w, abs(h))
 
-plt.plot(t, x)
+# Implemented function
+bands = [[50, 150],
+         [350, 750],
+         [900, 1500]]
+taps = bandpassFilter(ntaps, fs, bands)
+w, h = freqz(taps)
+plt.plot((.5 * fs / np.pi) * w, abs(h))
 
-# filter signal
-b, a = cheby1(4, 4, [50, 150], fs=sampling, btype='bandstop')
-filtered = lfilter(b, a, x)
-
-b, a = cheby1(4, 4, [350, 750], fs=sampling, btype='bandstop', analog=False)
-filtered = lfilter(b, a, filtered)
-
-b, a = cheby1(4, 4, [900, 1500], fs=sampling, btype='bandstop', analog=False)
-filtered = lfilter(b, a, filtered)
-
-plt.plot(t, filtered)
-plt.show()
-plt.clf()
-
-# Calculating amplitude spectrum
-fft1 = np.fft.fft(filtered)
-frq = np.fft.fftfreq(len(x), T)
-fft2 = np.fft.fft(x)
-plt.plot(frq, np.abs(fft2))
-plt.plot(frq, np.abs(fft1), '-bo')
+# Compare on plot
+plt.legend(['scipy.signal.firls', 'implemented bandpass filter'])
 plt.xlabel('Frequency')
-plt.ylabel('Amplitude')
-plt.title('Filtered Signal Spectrum')
+plt.ylabel('Magnitude')
 plt.show()
 
