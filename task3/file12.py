@@ -14,7 +14,7 @@ def bandpassFilter(ntaps, fs, bands):
         freqResponse += np.where(np.logical_and(omega >= start, omega < end), 1, 0)
 
     nyq = (ntaps - 1)//2
-    A = np.asmatrix(freqResponse[0:ntaps]).T
+    A = np.asmatrix(freqResponse).T
     FS = np.asmatrix(np.zeros((ntaps, nyq)))
     nyqRange = np.arange(nyq , 0, -1)
 
