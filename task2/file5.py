@@ -13,7 +13,7 @@ y = np.fft.fft(signal)
 
 # Plot amplitude spectrum
 amp = np.abs(y)
-freq = np.fft.fftfreq(n, sampling) * sampling
+freq = np.fft.fftfreq(n, sampling) * sampling ** 2
 plt.plot(freq, amp)
 plt.ylabel('Amplitude')
 plt.xlabel('Frequency')
@@ -22,8 +22,8 @@ plt.clf()
 
 # Remove noise
 yMod = np.array(y)
-fraction = 20
-yMod[(n//fraction):-(n//fraction)] = 0
+filt = np.array([0 if abs(f) >= 6000 else 1 for f in freq])
+yMod *= filt
 
 # Plot filtered amplitude spectrum
 plt.plot(freq, np.abs(yMod))
